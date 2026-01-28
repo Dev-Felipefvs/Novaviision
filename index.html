@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVAVIISON | The Essence of the Unseen</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Montserrat:wght@200;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --black: #050505;
+            --dark-gray: #121212;
+            --gold: #C5A021;
+            --gold-light: #e0c58d;
+            --white: #ffffff;
+            --gray: #888888;
+            --transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+        }
+
+        /* --- Reveal Animation Classes --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Buttons with Right-to-Left Hover --- */
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Efeito da direita para a esquerda */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            /* Início à direita */
+            width: 0;
+            /* Largura inicial zero */
+            height: 100%;
+            background: var(--gold);
+            z-index: -1;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            color: var(--black);
+            border-color: var(--gold);
+        }
+
+        .btn:hover::after {
+            width: 100%;
+            /* Expande para a esquerda */
+            left: 0;
+        }
+
+        .btn-filled {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .btn-filled::after {
+            background: var(--white);
+        }
+
+        .btn-filled:hover {
+            color: var(--black);
+            border-color: var(--white);
+        }
+
+        /* --- Header --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 2rem 0;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(15px);
+            padding: 1.2rem 0;
+            border-bottom: 1px solid rgba(197, 160, 33, 0.1);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+        }
+
+        .logo span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .mobile-menu-btn span {
+            width: 30px;
+            height: 1px;
+            background-color: var(--gold);
+            transition: var(--transition);
+        }
+
+        /* --- Hero --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            padding: 0 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 10vw, 6.5rem);
+            line-height: 1;
+            margin-bottom: 2.5rem;
+            letter-spacing: 12px;
+            font-weight: 300;
+        }
+
+        /* --- Sections --- */
+        section {
+            padding: 10rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .section-header p {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+        }
+
+        /* --- Olfactory Pyramid --- */
+        .pyramid-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+        }
+
+        .note-card {
+            background: var(--dark-gray);
+            padding: 4rem 3rem;
+            border: 1px solid rgba(197, 160, 33, 0.05);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .note-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-10px);
+        }
+
+        .note-card h3 {
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .note-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* --- Vision Section --- */
+        .vision {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            align-items: center;
+            gap: 6rem;
+        }
+
+        .vision-img {
+            position: relative;
+            aspect-ratio: 4/5;
+            background: url('https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=1000&auto=format&fit=crop') center/cover;
+            filter: grayscale(0.5);
+            transition: var(--transition);
+            border: 1px solid rgba(197, 160, 33, 0.2);
+        }
+
+        .vision-img:hover {
+            filter: grayscale(0);
+            border-color: var(--gold);
+        }
+
+        .vision-img::after {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            left: -2rem;
+            /* Movido para esquerda para equilibrar */
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--gold);
+            z-index: -1;
+            transition: var(--transition);
+        }
+
+        .vision-img:hover::after {
+            top: 1rem;
+            left: -1rem;
+        }
+
+        .vision-content h2 {
+            margin-bottom: 2rem;
+        }
+
+        .vision-content p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* --- Gallery --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            background: var(--dark-gray);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s ease;
+            filter: brightness(0.6);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            filter: brightness(1);
+        }
+
+        /* --- Contact --- */
+        .contact {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .contact-form {
+            margin-top: 4rem;
+            display: grid;
+            gap: 2rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+            color: var(--white);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-bottom-color: var(--gold);
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 6rem 2rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 2.5rem;
+            letter-spacing: 12px;
+            margin-bottom: 3rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .social-links a {
+            color: var(--gray);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--gold);
+        }
+
+        .copyright {
+            font-size: 0.7rem;
+            color: #444;
+            letter-spacing: 1px;
+        }
+
+        /* --- Mobile Nav Overlay --- */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2.5rem;
+            transform: translateY(-100%);
+            transition: var(--transition);
+        }
+
+        .mobile-nav.active {
+            transform: translateY(0);
+        }
+
+        .mobile-nav a {
+            font-size: 1.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 4px;
+        }
+
+        .close-mobile {
+            position: absolute;
+            top: 2.5rem;
+            right: 2rem;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 1024px) {
+            .vision {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .vision-img {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .vision-img::after {
+                display: none;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            section {
+                padding: 6rem 1.5rem;
+            }
+
+            .section-header {
+                margin-bottom: 4rem;
+            }
+
+            .hero-title {
+                letter-spacing: 6px;
+            }
+        }
+    </style>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0"
+  }
+}
+</script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <nav>
+            <a href="#" class="logo">NOVA<span>VII</span>SON</a>
+            <div class="nav-links">
+                <a href="#essence">Essência</a>
+                <a href="#vision">A Marca</a>
+                <a href="#collection">Coleção</a>
+                <a href="#contact">Consultoria</a>
+            </div>
+            <div class="mobile-menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="close-mobile" id="closeNav">&times;</div>
+        <a href="#essence" class="mobile-link">Essência</a>
+        <a href="#vision" class="mobile-link">A Marca</a>
+        <a href="#collection" class="mobile-link">Coleção</a>
+        <a href="#contact" class="mobile-link">Consultoria</a>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <span class="hero-subtitle reveal">The Shadow of Elegance</span>
+            <h1 class="hero-title reveal">NOVAVIISON</h1>
+            <div class="reveal" style="transition-delay: 0.3s">
+                <a href="#collection" class="btn btn-filled">Descobrir Profundidade</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Essence -->
+    <section id="essence">
+        <div class="section-header reveal">
+            <p>Pirâmide Olfativa</p>
+            <h2>A Composição</h2>
+        </div>
+        <div class="pyramid-grid">
+            <div class="note-card reveal">
+                <h3>Notas de Topo</h3>
+                <p>Bergamota da Calábria, Pimenta Negra de Madagascar e Cardamomo. Uma abertura vibrante e misteriosa
+                    que instiga os sentidos.</p>
+            </div>
+            <div class="note-card reveal" style="transition-delay: 0.2s">
+                <h3>Notas de Coração</h3>
+                <p>Íris Pallida, Couro Nobre e Acordes de Whisky. A alma densa e sofisticada da fragrância, revelando
+                    seu caráter Black.</p>
+            </div>
+            <div class="note-card reveal" style="transition-delay: 0.4s">
+                <h3>Notas de Base</h3>
+                <p>Oud Negro, Sândalo de Mysore e Âmbar Cinzento. Uma fixação eterna que deixa um rastro inesquecível de
+                    poder.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision (Nossa História) -->
+    <section id="vision" class="vision">
+        <div class="vision-img reveal">
+            <!-- Imagem do perfume à esquerda conforme solicitado -->
+        </div>
+        <div class="vision-content reveal">
+            <div class="section-header" style="text-align: left; margin-bottom: 0;">
+                <p>Nossa História</p>
+                <h2>A Visão Além do Visível</h2>
+            </div>
+            <p>NOVAVIISON não é apenas uma fragrância; é um manifesto. Criada em Paris e refinada em Grasse, nossa
+                essência Black foi projetada para aqueles que comandam o silêncio e a elegância absoluta.</p>
+            <p>Cada frasco é uma peça de arte arquitetônica, esculpida em vidro obsidian com detalhes em ouro 18k,
+                contendo o elixir mais precioso da perfumaria moderna.</p>
+            <a href="#contact" class="btn">Conheça o Legado</a>
+        </div>
+    </section>
+
+    <!-- Collection Grid (Nossa Seleção) -->
+    <section id="collection">
+        <div class="section-header reveal">
+            <p>Nossa Seleção</p>
+            <h2>Momentos Capturados</h2>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item reveal"><img
+                    src="https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=600" alt="Perfume 1"></div>
+            <div class="gallery-item reveal" style="transition-delay: 0.1s"><img
+                    src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?q=80&w=600" alt="Perfume 2"></div>
+            <div class="gallery-item reveal" style="transition-delay: 0.2s"><img
+                    src="https://images.unsplash.com/photo-1587017539504-67cfbddac569?q=80&w=600" alt="Perfume 3"></div>
+            <div class="gallery-item reveal" style="transition-delay: 0.3s">
+                <!-- Imagem do perfume 4 garantida conforme solicitado -->
+                <img src="/assets/b4b559941c3304303f56eff43814503f.jpg" alt="Perfume 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact reveal">
+        <div class="section-header">
+            <p>Fale Conosco</p>
+            <h2>Solicite uma Consultoria</h2>
+        </div>
+        <form class="contact-form" id="contactForm">
+            <div class="input-group">
+                <input type="text" placeholder="NOME COMPLETO" required>
+            </div>
+            <div class="input-group">
+                <input type="email" placeholder="E-MAIL CORPORATIVO" required>
+            </div>
+            <div class="input-group">
+                <textarea rows="4" placeholder="Sua Mensagem ou Interesse"></textarea>
+            </div>
+            <button type="submit" class="btn btn-filled" style="width: 100%;">Enviar Solicitação</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">NOVAVIISON</div>
+        <div class="social-links">
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+        </div>
+        <p class="copyright">&copy; 2024 NOVAVIISON PARFUMS LUXE. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        // --- Sticky Header Logic ---
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // --- Mobile Menu Toggle ---
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        const closeNav = document.getElementById('closeNav');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        const toggleMenu = () => mobileNav.classList.toggle('active');
+
+        menuBtn.addEventListener('click', toggleMenu);
+        closeNav.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
+        // --- Intersection Observer for Scroll Animations ---
+        const observerOptions = {
+            threshold: 0.15
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // --- Form Simulation ---
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = 'ENVIANDO...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert('Agradecemos seu interesse. Nossa equipe de especialistas entrará em contato em breve.');
+                e.target.reset();
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>
